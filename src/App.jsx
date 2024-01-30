@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import { messaging } from './libs/firebase'
 import { getToken } from 'firebase/messaging'
+
+import { useAuth } from './libs/auth'
 
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
@@ -10,6 +12,10 @@ import './App.css'
 function App() {
   const [count, setCount] = useState(0)
   const [pushToken, setPushToken] = useState(null)
+
+  const auth = useAuth()
+
+  console.log('AUTH', auth)
 
   async function requestPermission() {
     //requesting permission using Notification API
@@ -30,16 +36,12 @@ function App() {
   }
 
   useEffect(() => {
-    let mounted = false
-
-    if (!mounted) {
-      requestPermission()
+    if (!auth.user) {
+      return
     }
 
-    return () => {
-      mounted = true
-    }
-  }, [])
+    requestPermission()
+  }, [auth])
 
   return (
     <>
@@ -56,6 +58,14 @@ function App() {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
+
+        <div style={{ marginLeft: '1rem' }}>
+          {auth.user ? (
+            <button onClick={() => auth.signout()}>SignOut</button>
+          ) : (
+            <button onClick={() => auth.signIn()}>SignIn</button>
+          )}
+        </div>
         <p>
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
