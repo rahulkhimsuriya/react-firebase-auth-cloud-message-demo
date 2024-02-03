@@ -3,7 +3,6 @@ import { useContext, createContext, useEffect, useState } from 'react'
 import {
   signInAnonymously,
   getAuth,
-  signOut,
   onAuthStateChanged,
   deleteUser,
 } from 'firebase/auth'
@@ -41,7 +40,7 @@ function useProvideAuth() {
   }
 
   const signIn = () => {
-    signInAnonymously(auth).then((response) => handleUser(response.user))
+    return signInAnonymously(auth).then((response) => handleUser(response.user))
   }
 
   const signout = () => {
