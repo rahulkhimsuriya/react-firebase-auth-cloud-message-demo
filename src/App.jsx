@@ -1,22 +1,17 @@
-import { useAuth } from './libs/auth'
-import Home from './pages/home'
-import Login from './pages/login'
+import { RouterProvider } from 'react-router-dom'
+import { Center, Spinner } from '@chakra-ui/react'
+import { router } from './routes/router'
 
 function App() {
-  const auth = useAuth()
-
-  if (auth.user) {
-    return (
-      <>
-        <Home />
-      </>
-    )
-  }
-
   return (
-    <>
-      <Login />
-    </>
+    <RouterProvider
+      fallbackElement={
+        <Center>
+          <Spinner />
+        </Center>
+      }
+      router={router}
+    />
   )
 }
 

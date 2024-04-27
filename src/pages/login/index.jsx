@@ -1,18 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   Box,
   Button,
   ButtonGroup,
-  Center,
   Card,
   CardBody,
   CardHeader,
   Container,
   Text,
 } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
+
 import { useAuth } from '../../libs/auth'
 
 export default function Login() {
+  const navigate = useNavigate()
   const auth = useAuth()
 
   const [loading, setLoading] = useState(false)
@@ -22,6 +24,7 @@ export default function Login() {
 
     try {
       await auth.signIn()
+      navigate('/home')
     } catch (error) {
       console.log('ERROR', error)
     } finally {

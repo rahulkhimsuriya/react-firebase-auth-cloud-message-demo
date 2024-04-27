@@ -3,23 +3,23 @@ import { useEffect, useState } from 'react'
 import {
   Box,
   Button,
-  Center,
   Card,
   CardBody,
-  Container,
-  Text,
-  Flex,
+  Center,
   Code,
-  Stack,
-  StackDivider,
+  Container,
+  Flex,
   Heading,
   Image,
   SimpleGrid,
+  Stack,
+  StackDivider,
+  Text,
 } from '@chakra-ui/react'
+import { redirect, useNavigate } from 'react-router-dom'
 
 import { getToken } from 'firebase/messaging'
 import { messaging } from '../../libs/firebase'
-
 import { useAuth } from '../../libs/auth'
 
 // assets
@@ -27,10 +27,11 @@ import reactLogo from '../../assets/react.svg'
 import viteLogo from '/vite.svg'
 
 function Home() {
+  const auth = useAuth()
+  const navigate = useNavigate()
+
   const [count, setCount] = useState(0)
   const [pushToken, setPushToken] = useState(null)
-
-  const auth = useAuth()
 
   async function requestPermission() {
     //requesting permission using Notification API
@@ -58,6 +59,15 @@ function Home() {
     requestPermission()
   }, [auth])
 
+  const onSignout = async () => {
+    try {
+      await auth.signout()
+      navigate('/login')
+    } catch (error) {
+      console.log('ERROR', error)
+    }
+  }
+
   return (
     <Container
       minHeight="100vh"
@@ -68,7 +78,7 @@ function Home() {
         alignItems: 'center',
       }}
     >
-      <Flex direction="column">
+      <Flex direction="column" width="100%">
         <Center textAlign="center">
           <Box>
             <Flex>
@@ -96,7 +106,7 @@ function Home() {
           </Box>
         </Center>
 
-        <SimpleGrid marginTop="2rem" columns={1} spacing={10}>
+        <SimpleGrid marginTop="2rem">
           <Box>
             <Card>
               <CardBody>
@@ -138,9 +148,9 @@ function Home() {
             </Card>
           </Box>
 
-          <Box>
+          <Box marginTop="2rem">
             <Flex justifyContent="end">
-              <Button colorScheme="red" variant="outline">
+              <Button colorScheme="red" variant="outline" onClick={onSignout}>
                 Signout
               </Button>
             </Flex>
