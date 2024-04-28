@@ -15,8 +15,9 @@ import {
   Stack,
   StackDivider,
   Text,
+  useToast,
 } from '@chakra-ui/react'
-import { redirect, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { getToken } from 'firebase/messaging'
 import { messaging } from '../../libs/firebase'
@@ -29,9 +30,11 @@ import viteLogo from '/vite.svg'
 function Home() {
   const auth = useAuth()
   const navigate = useNavigate()
+  const toast = useToast()
 
   const [count, setCount] = useState(0)
   const [pushToken, setPushToken] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   async function requestPermission() {
     //requesting permission using Notification API
@@ -61,10 +64,24 @@ function Home() {
 
   const onSignout = async () => {
     try {
+      setLoading(true)
+
       await auth.signout()
+      setPushToken(null)
+
       navigate('/login')
+
+      toast({
+        title: 'Logout.',
+        description: 'You have logged out.',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
     } catch (error) {
       console.log('ERROR', error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -150,7 +167,13 @@ function Home() {
 
           <Box marginTop="2rem">
             <Flex justifyContent="end">
-              <Button colorScheme="red" variant="outline" onClick={onSignout}>
+              <Button
+                colorScheme="red"
+                variant="outline"
+                onClick={onSignout}
+                isLoading={loading}
+                loadingText="Loading..."
+              >
                 Signout
               </Button>
             </Flex>

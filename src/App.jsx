@@ -1,6 +1,6 @@
 import { RouterProvider } from 'react-router-dom'
 import { Center, Spinner } from '@chakra-ui/react'
-import { router } from './routes/router'
+import { router } from './routes/router.jsx'
 
 function App() {
   return (

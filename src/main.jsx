@@ -9,10 +9,10 @@ import { AuthProvider } from './libs/auth'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider toastOptions={{ defaultOptions: { position: 'bottom' } }}>
       <AuthProvider>
         <App />
       </AuthProvider>
     </ChakraProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 )
