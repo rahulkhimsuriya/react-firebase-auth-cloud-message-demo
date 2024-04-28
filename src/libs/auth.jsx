@@ -1,3 +1,8 @@
+/**
+ * CODE STOLEN FROM @leerob
+ * https://github.com/leerob/fastfeedback/blob/master/lib/auth.js
+ */
+
 import { useContext, createContext, useEffect, useState } from 'react'
 
 import {
