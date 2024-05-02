@@ -7,9 +7,10 @@ import { useContext, createContext, useEffect, useState } from 'react'
 
 import {
   signInAnonymously,
+  signInWithEmailAndPassword as signInWithEmailAndPasswordFirebase,
+  createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
-  deleteUser,
 } from 'firebase/auth'
 import { app } from './firebase'
 
@@ -48,8 +49,20 @@ function useProvideAuth() {
     return signInAnonymously(auth).then((response) => handleUser(response.user))
   }
 
+  const signInWithEmailAndPassword = ({ email, password }) => {
+    return signInWithEmailAndPasswordFirebase(auth, email, password).then(
+      (response) => handleUser(response.user),
+    )
+  }
+
+  const signUpWithEmailAndPassword = ({ email, password }) => {
+    return createUserWithEmailAndPassword(auth, email, password).then(
+      (response) => handleUser(response.user),
+    )
+  }
+
   const signout = () => {
-    return deleteUser(auth.currentUser).then(() => handleUser(false))
+    return auth.signOut().then(() => handleUser(false))
   }
 
   useEffect(() => {
@@ -61,8 +74,9 @@ function useProvideAuth() {
   return {
     user,
     loading,
-    // signinWithGitHub,
     signIn,
+    signInWithEmailAndPassword,
+    signUpWithEmailAndPassword,
     signout,
   }
 }

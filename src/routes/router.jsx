@@ -12,6 +12,7 @@ import GuestLayout from '../layouts/guest.layout'
 // Pages
 import Home from '../pages/home'
 import Login from '../pages/login'
+import SignUp from '../pages/singup'
 import NotFound from '../pages/errors/not-found'
 
 export const router = createBrowserRouter(
@@ -23,6 +24,7 @@ export const router = createBrowserRouter(
       </Route>
       <Route path="/" element={<GuestLayout />}>
         <Route index path="login" element={<Login />} />,
+        <Route path="signup" element={<SignUp />} />,
       </Route>
       ,
     </Route>,

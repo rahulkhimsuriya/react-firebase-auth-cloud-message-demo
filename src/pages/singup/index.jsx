@@ -1,8 +1,8 @@
 import { Box, Container } from '@chakra-ui/react'
 
-import SignInForm from './SignInForm'
+import SingUpForm from './SingUpForm'
 
-export default function Login() {
+export default function SignUp() {
   return (
     <Container
       minHeight="100vh"
@@ -15,7 +15,7 @@ export default function Login() {
       }}
     >
       <Box width="100%" style={{ marginTop: '-5rem' }}>
-        <SignInForm />
+        <SingUpForm />
       </Box>
     </Container>
   )
