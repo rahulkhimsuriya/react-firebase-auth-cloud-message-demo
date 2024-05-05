@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import { useAuth } from '../libs/auth'
+import { useAuth } from '../hooks/auth'
 import { Center, Flex, Spinner } from '@chakra-ui/react'
 
 export default function AppLayout() {

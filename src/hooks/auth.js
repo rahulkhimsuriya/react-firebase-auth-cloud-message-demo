@@ -9,7 +9,7 @@ import {
 } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 
-import { app } from './firebase'
+import { app } from '../libs/firebase'
 
 export const HOME_ROUTE = '/home'
 export const LOGIN_ROUTE = '/login'

@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { getToken } from 'firebase/messaging'
 import { messaging } from '../../libs/firebase'
-import { useAuth } from '../../libs/auth'
+import { useAuth } from '../../hooks/auth'
 
 // assets
 import reactLogo from '../../assets/react.svg'

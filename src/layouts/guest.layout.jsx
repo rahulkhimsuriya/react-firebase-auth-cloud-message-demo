@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import { useAuth, HOME_ROUTE } from '../libs/auth'
+import { useAuth, HOME_ROUTE } from '../hooks/auth'
 
 export default function GuestLayout() {
   useAuth({

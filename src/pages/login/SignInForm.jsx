@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { useAuth } from '../../libs/auth'
+import { useAuth } from '../../hooks/auth'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
