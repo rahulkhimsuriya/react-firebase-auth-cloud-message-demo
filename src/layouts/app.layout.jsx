@@ -1,19 +1,9 @@
-import { useEffect } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import { useAuth } from '../libs/auth'
 import { Center, Flex, Spinner } from '@chakra-ui/react'
 
 export default function AppLayout() {
-  const navigate = useNavigate()
-  const { user: authUser, loading } = useAuth()
-
-  useEffect(() => {
-    if (loading) {
-      return
-    }
-
-    authUser ? navigate('/home') : navigate('/login')
-  }, [authUser, navigate, loading])
+  const { loading } = useAuth()
 
   if (loading) {
     return (

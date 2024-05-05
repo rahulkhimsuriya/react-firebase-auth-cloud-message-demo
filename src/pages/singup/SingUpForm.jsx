@@ -40,7 +40,7 @@ export default function SignUpForm() {
 
   const [loading, setLoading] = useState(false)
 
-  const onSignIn = async ({ name, email, password }) => {
+  const onSignUp = async ({ name, email, password }) => {
     setLoading(true)
 
     try {
@@ -96,7 +96,7 @@ export default function SignUpForm() {
       </Box>
 
       <Box marginTop={8} textAlign="left">
-        <form method="POST" onSubmit={handleSubmit(onSignIn)}>
+        <form method="POST" onSubmit={handleSubmit(onSignUp)}>
           <FormControl>
             <FormLabel
               htmlFor="name"

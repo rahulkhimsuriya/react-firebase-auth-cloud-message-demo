@@ -1,9 +1,4 @@
-/**
- * CODE STOLEN FROM @leerob
- * https://github.com/leerob/fastfeedback/blob/master/lib/auth.js
- */
-
-import { useContext, createContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
   signInAnonymously,
@@ -12,72 +7,89 @@ import {
   getAuth,
   onAuthStateChanged,
 } from 'firebase/auth'
+import { useNavigate } from 'react-router-dom'
+
 import { app } from './firebase'
 
-const authContext = createContext()
+export const HOME_ROUTE = '/home'
+export const LOGIN_ROUTE = '/login'
 
-export const useAuth = () => {
-  return useContext(authContext)
-}
+export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
+  {
+    const navigate = useNavigate()
+    const auth = getAuth(app)
 
-export const AuthProvider = ({ children }) => {
-  const auth = useProvideAuth()
-  return <authContext.Provider value={auth}>{children}</authContext.Provider>
-}
+    const [user, setUser] = useState(null)
+    const [loading, setLoading] = useState(true)
 
-function useProvideAuth() {
-  const auth = getAuth(app)
+    const handleUser = (rawUser) => {
+      if (rawUser) {
+        const user = formatUser(rawUser)
 
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
-
-  const handleUser = (rawUser) => {
-    if (rawUser) {
-      const user = formatUser(rawUser)
-
-      setLoading(false)
-      setUser(user)
-      return user
-    } else {
-      setLoading(false)
-      setUser(false)
-      return false
+        setLoading(false)
+        setUser(user)
+        return user
+      } else {
+        setLoading(false)
+        setUser(false)
+        return false
+      }
     }
-  }
 
-  const signIn = () => {
-    return signInAnonymously(auth).then((response) => handleUser(response.user))
-  }
+    const signIn = () => {
+      return signInAnonymously(auth).then((response) =>
+        handleUser(response.user),
+      )
+    }
 
-  const signInWithEmailAndPassword = ({ email, password }) => {
-    return signInWithEmailAndPasswordFirebase(auth, email, password).then(
-      (response) => handleUser(response.user),
-    )
-  }
+    const signInWithEmailAndPassword = ({ email, password }) => {
+      return signInWithEmailAndPasswordFirebase(auth, email, password).then(
+        (response) => handleUser(response.user),
+      )
+    }
 
-  const signUpWithEmailAndPassword = ({ email, password }) => {
-    return createUserWithEmailAndPassword(auth, email, password).then(
-      (response) => handleUser(response.user),
-    )
-  }
+    const signUpWithEmailAndPassword = ({ email, password }) => {
+      return createUserWithEmailAndPassword(auth, email, password).then(
+        (response) => handleUser(response.user),
+      )
+    }
 
-  const signout = () => {
-    return auth.signOut().then(() => handleUser(false))
-  }
+    const signout = () => {
+      return auth.signOut().then(() => handleUser(false))
+    }
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, handleUser)
+    useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, handleUser)
 
-    return () => unsubscribe()
-  }, [auth])
+      return () => unsubscribe()
+    }, [auth])
 
-  return {
-    user,
-    loading,
-    signIn,
-    signInWithEmailAndPassword,
-    signUpWithEmailAndPassword,
-    signout,
+    useEffect(() => {
+      if (loading) {
+        return
+      }
+
+      if (middleware === 'auth' && !user) {
+        navigate(LOGIN_ROUTE)
+      }
+
+      if (middleware === 'auth' && user) {
+        navigate(redirectIfAuthenticated)
+      }
+
+      if (middleware === 'guest' && redirectIfAuthenticated && user) {
+        navigate(redirectIfAuthenticated)
+      }
+    }, [user, loading])
+
+    return {
+      user,
+      loading,
+      signIn,
+      signInWithEmailAndPassword,
+      signUpWithEmailAndPassword,
+      signout,
+    }
   }
 }
 

@@ -19,14 +19,12 @@ export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<AppLayout />} errorElement={<NotFound />}>
       <Route path="/" element={<AuthLayout />}>
-        {/* <Route index element={<Home />} /> */}
-        <Route path="home" element={<Home />} />
+        <Route index path="home" element={<Home />} />
       </Route>
       <Route path="/" element={<GuestLayout />}>
-        <Route index path="login" element={<Login />} />,
-        <Route path="signup" element={<SignUp />} />,
+        <Route index path="login" element={<Login />} />
+        <Route path="signup" element={<SignUp />} />
       </Route>
-      ,
     </Route>,
   ),
 )
