@@ -180,9 +180,9 @@ export default function SignUpForm() {
             bg="blue.500"
             _hover={{ bg: 'blue.600' }}
             isLoading={loading}
-            loadingText="Singing in...."
+            loadingText="Creating account...."
           >
-            Sign in
+            Create account
           </Button>
         </form>
       </Box>
