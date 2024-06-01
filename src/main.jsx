@@ -1,16 +1,22 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 
-import { ChakraProvider } from '@chakra-ui/react'
+import { Center, ChakraProvider, Spinner } from '@chakra-ui/react'
 
 import App from './App.jsx'
-
-// import { AuthProvider } from './libs/auth'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ChakraProvider toastOptions={{ defaultOptions: { position: 'bottom' } }}>
-      <App />
+      <Suspense
+        fallback={
+          <Center>
+            <Spinner />
+          </Center>
+        }
+      >
+        <App />
+      </Suspense>
     </ChakraProvider>
   </React.StrictMode>,
 )

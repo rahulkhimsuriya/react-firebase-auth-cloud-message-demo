@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+import { lazy } from 'react'
 import {
   Route,
   createBrowserRouter,
@@ -5,25 +7,25 @@ import {
 } from 'react-router-dom'
 
 // Layouts
-import AppLayout from '../layouts/app.layout'
-import AuthLayout from '../layouts/auth.layout'
-import GuestLayout from '../layouts/guest.layout'
+const AppLayout = lazy(() => import('../layouts/app.layout'))
+const AuthLayout = lazy(() => import('../layouts/auth.layout'))
+const GuestLayout = lazy(() => import('../layouts/guest.layout'))
 
 // Pages
-import Home from '../pages/home'
-import Login from '../pages/login'
-import SignUp from '../pages/singup'
-import NotFound from '../pages/errors/not-found'
+const Home = lazy(() => import('../pages/home'))
+const Login = lazy(() => import('../pages/login'))
+const SignUp = lazy(() => import('../pages/singup'))
+const NotFound = lazy(() => import('../pages/errors/not-found'))
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<AppLayout />} errorElement={<NotFound />}>
-      <Route path="/" element={<AuthLayout />}>
-        <Route index path="home" element={<Home />} />
+    <Route path="/" Component={AppLayout} errorElement={NotFound}>
+      <Route path="/" Component={AuthLayout}>
+        <Route index path="home" Component={Home} />
       </Route>
-      <Route path="/" element={<GuestLayout />}>
-        <Route index path="login" element={<Login />} />
-        <Route path="signup" element={<SignUp />} />
+      <Route path="/" Component={GuestLayout}>
+        <Route index path="login" Component={Login} />
+        <Route path="signup" Component={SignUp} />
       </Route>
     </Route>,
   ),
